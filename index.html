@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WaefreBeorn</title>
+    <style>
+        :root{--bg:#0a0a0e;--fg:#d0d0d8;--a:#6b8fff;--b:#00c9a7;--c:#ff6b8a;--d:#ffb347;--m:#4a4a58;--border:#18181e;--card:#0e0e16}
+        *{margin:0;padding:0;box-sizing:border-box}
+        html{scroll-behavior:smooth}
+        body{font-family:Georgia,'Times New Roman',serif;background:var(--bg);color:var(--fg);line-height:1.7;overflow-x:hidden}
+        .mono{font-family:'SF Mono','JetBrains Mono',monospace}
+        header{position:fixed;top:0;left:0;right:0;padding:1rem 2rem;display:flex;justify-content:space-between;align-items:center;background:rgba(10,10,14,0.95);backdrop-filter:blur(8px);z-index:100;border-bottom:1px solid var(--border)}
+        .logo{font-size:1rem;letter-spacing:0.12em;color:var(--a);font-weight:600}
+        nav a{color:var(--m);text-decoration:none;font-size:0.65rem;margin-left:2rem;text-transform:uppercase;letter-spacing:0.1em;transition:color 0.2s}
+        nav a:hover{color:var(--fg)}
+        section{max-width:780px;margin:0 auto;padding:8rem 2rem 4rem;min-height:80vh}
+        section:first-of-type{padding-top:10rem}
+        .hero-title{font-size:clamp(2rem,5vw,3.2rem);font-weight:700;line-height:1.15;letter-spacing:-0.01em;margin-bottom:2rem}
+        .hero-sub{font-size:1rem;color:var(--m);max-width:560px;line-height:1.8;font-style:italic}
+        .sec-num{font-size:0.65rem;text-transform:uppercase;letter-spacing:0.2em;color:var(--a);margin-bottom:1rem}
+        .sec-title{font-size:1.5rem;font-weight:600;margin-bottom:1.5rem}
+        .sec-body{font-size:0.9rem;color:var(--m);line-height:1.8;max-width:600px}
+        .sec-body strong{color:var(--fg);font-weight:600}
+        .demo{margin:2rem 0;padding:1.5rem;background:var(--card);border:1px solid var(--border);border-radius:8px}
+        .demo canvas{width:100%;display:block;background:#080810;border-radius:4px}
+        .demo .label{font-size:0.65rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--b);margin-bottom:0.75rem}
+        .demo .output{font-size:0.75rem;color:var(--b);margin-top:0.75rem;font-family:'SF Mono',monospace;min-height:1.2rem;line-height:1.6}
+        .demo .caption{font-size:0.7rem;color:var(--m);margin-top:0.5rem;font-style:italic}
+        .controls{display:flex;gap:0.4rem;margin-top:0.75rem;flex-wrap:wrap}
+        .controls button{background:transparent;border:1px solid var(--border);color:var(--m);padding:0.3rem 0.7rem;border-radius:4px;font-family:'SF Mono',monospace;font-size:0.6rem;cursor:pointer;transition:all 0.2s}
+        .controls button:hover{border-color:var(--a);color:var(--fg)}
+        .controls button.active{background:var(--a);color:var(--bg);border-color:var(--a)}
+        .controls input{background:var(--bg);border:1px solid var(--border);color:var(--fg);padding:0.3rem 0.5rem;border-radius:4px;font-family:'SF Mono',monospace;font-size:0.65rem;width:80px}
+        .controls input:focus{border-color:var(--a);outline:none}
+        .proj-list{margin:2rem 0}
+        .proj-item{display:flex;align-items:baseline;gap:1rem;padding:0.75rem 0;border-bottom:1px solid var(--border)}
+        .proj-item .name{font-size:0.85rem;color:var(--fg);text-decoration:none;border-bottom:1px solid transparent;transition:border-color 0.2s}
+        .proj-item .name:hover{border-bottom-color:var(--a)}
+        .proj-item .desc{font-size:0.7rem;color:var(--m)}
+        .proj-item .tag{font-size:0.55rem;font-family:'SF Mono',monospace;color:var(--a);border:1px solid var(--border);padding:0.1rem 0.4rem;border-radius:3px;margin-left:auto;white-space:nowrap}
+        footer{border-top:1px solid var(--border);padding:2rem;text-align:center;font-size:0.65rem;color:var(--m)}
+        footer a{color:var(--m);text-decoration:none;border-bottom:1px solid var(--border)}
+        footer a:hover{color:var(--a)}
+        @media(max-width:600px){
+            nav a{margin-left:1rem;font-size:0.55rem}
+            section{padding:6rem 1.5rem 3rem}
+            .hero-title{font-size:1.6rem}
+            .proj-item{flex-direction:column;gap:0.25rem}
+            .proj-item .tag{margin-left:0}
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">WaefreBeorn</div>
+        <nav>
+            <a href="#proof">Proof</a>
+            <a href="#work">Work</a>
+            <a href="https://waefrebeorn.org">.org</a>
+        </nav>
+    </header>
+
+    <main>
+        <section>
+            <h1 class="hero-title">We built an entire<br>intelligence stack<br>from scratch.</h1>
+            <p class="hero-sub">Operating system. Compiler. Inference engine. Math library. Media encoders. Every line in C. No dependencies. No shortcuts.</p>
+        </section>
+
+        <section id="proof">
+            <div class="sec-num">01 / Proof</div>
+            <h2 class="sec-title">The folded polynomial.</h2>
+            <p class="sec-body">The identity sin²x + cos²x = 1 means you never compute both values. Compute one, derive the other. We implemented <strong>Silas Lock's folded polynomial</strong>: reduce any angle to [-π/4, π/4], evaluate one tiny polynomial, derive the complement via quadrant symmetry.</p>
+
+            <!-- DEMO 1: Interactive step-by-step -->
+            <div class="demo">
+                <div class="label">Step-by-step computation — enter any angle</div>
+                <canvas id="stepCanvas" height="280"></canvas>
+                <div class="controls">
+                    <input type="text" id="angleInput" value="2.5" oninput="updateStep()">
+                    <span style="color:var(--m);font-size:0.6rem;padding:0.3rem 0;">radians</span>
+                </div>
+                <div class="output" id="stepOutput">Enter an angle to see the computation.</div>
+                <div class="caption">Shows the Cody-Waite reduction, polynomial evaluation, and quadrant unfold.</div>
+            </div>
+
+            <!-- DEMO 2: Error proof -->
+            <div class="demo">
+                <div class="label">Error proof — folded polynomial vs libm across [0, 4π]</div>
+                <canvas id="errorCanvas" height="200"></canvas>
+                <div class="output" id="errorOutput">Max error: computing...</div>
+                <div class="caption">If the algorithm is correct, this should show noise near floating-point epsilon (~1e-7). Any visible pattern means a bug.</div>
+            </div>
+
+            <!-- DEMO 3: Identity verification -->
+            <div class="demo">
+                <div class="label">Identity verification — sin²x + cos²x should equal 1.000000</div>
+                <canvas id="identityCanvas" height="200"></canvas>
+                <div class="output" id="identityOutput">Max deviation from 1.0: computing...</div>
+                <div class="caption">A flat line at 0 means the identity holds exactly. Any deviation is the algorithm's error.</div>
+            </div>
+        </section>
+
+        <section id="work">
+            <div class="sec-num">02 / Work</div>
+            <h2 class="sec-title">What we're building.</h2>
+            <p class="sec-body">Not a product. A complete stack, written from scratch, in C11, with no third-party dependencies.</p>
+            <div class="proj-list">
+                <div class="proj-item"><a href="https://github.com/waefrebeorn/wubuwizard" class="name">wubuwizard</a><span class="desc">Inference engine, KV filesystem, research ledger</span><span class="tag">C11</span></div>
+                <div class="proj-item"><a href="https://github.com/waefrebeorn/WuBuOS" class="name">WuBuOS</a><span class="desc">Kernel, GUI, Styx/9P namespace</span><span class="tag">C</span></div>
+                <div class="proj-item"><a href="https://github.com/waefrebeorn/WuBuNOS" class="name">WuBuNOS</a><span class="desc">HolyC compiler, 11 ISA backends</span><span class="tag">C11</span></div>
+                <div class="proj-item"><a href="https://github.com/waefrebeorn/WuBuMath" class="name">WuBuMath</a><span class="desc">Folded polynomials, Hamilton encoder</span><span class="tag">C11</span></div>
+                <div class="proj-item"><a href="https://github.com/waefrebeorn/slermes" class="name">Slermes</a><span class="desc">Hermes Agent in C11, zero Python</span><span class="tag">C11</span></div>
+                <div class="proj-item"><a href="https://github.com/waefrebeorn/distiller-c11" class="name">distiller-c11</a><span class="desc">E-ink SDK: dither, pack, region-aware</span><span class="tag">C11</span></div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>waefrebeorn.com — Built from scratch. Proven to work.</p>
+        <p style="margin-top:0.5rem;"><a href="https://github.com/waefrebeorn">GitHub</a> &middot; <a href="https://waefrebeorn.org">.org</a></p>
+        <p style="margin-top:0.5rem;opacity:0.4"><a href="/legacy">legacy</a></p>
+    </footer>
+
+<script>
+// === FOLDED POLYNOMIAL — exact from wubu_foldmath.h ===
+const FC = {
+    s1:1.0, s3:-0.16666666666666666, s5:0.008333333333333333,
+    s7:-0.000198412698412698, s9:0.000002755731922399,
+    c2:-0.5, c4:0.041666666666666667, c6:-0.001388888888888889, c8:0.000024801587301587,
+    pi2_hi:1.57079637050628662109375, pi2_lo:-4.37113900018624283e-8, two_over_pi:0.6366197723675814
+};
+function foldSin(r){const r2=r*r;return r*(FC.s1+r2*(FC.s3+r2*(FC.s5+r2*(FC.s7+r2*FC.s9))))}
+function foldCos(r){const r2=r*r;return 1+r2*(FC.c2+r2*(FC.c4+r2*(FC.c6+r2*FC.c8)))}
+function foldSincos(x){
+    const nf=Math.round(x*FC.two_over_pi);
+    let r=x-nf*FC.pi2_hi; r=r-nf*FC.pi2_lo;
+    const vs=foldSin(r), vc=foldCos(r);
+    const q=nf-4*Math.floor(nf*0.25);
+    const odd=((q>=1&&q<2)||q>=3)?1:0;
+    const s_mag=odd*vc+(1-odd)*vs, c_mag=odd*vs+(1-odd)*vc;
+    const s_neg=q>=2?-1:1, c_neg=(q>=1&&q<3)?-1:1;
+    return {s:s_mag*s_neg, c:c_mag*c_neg, r, q, vs, vc, nf};
+}
+
+// === RESIZE HELPER ===
+function resizeCanvas(canvas){
+    const dpr=Math.min(window.devicePixelRatio||1,2);
+    canvas.width=canvas.offsetWidth*dpr;
+    canvas.height=canvas.getAttribute('data-height')*dpr||300*dpr;
+    const ctx=canvas.getContext('2d');
+    ctx.scale(dpr,dpr);
+    return ctx;
+}
+
+// === DEMO 1: STEP-BY-STEP ===
+const stepCanvas=document.getElementById('stepCanvas');
+const stepCtx=stepCanvas.getContext('2d');
+stepCanvas.setAttribute('data-height','280');
+
+function drawStep(){
+    const ctx=resizeCanvas(stepCanvas);
+    const w=stepCanvas.offsetWidth, h=280;
+    ctx.clearRect(0,0,w,h);
+
+    const xInput=parseFloat(document.getElementById('angleInput').value)||0;
+    const res=foldSincos(xInput);
+    const trueS=Math.sin(xInput), trueC=Math.cos(xInput);
+
+    // Grid
+    ctx.strokeStyle='#111';ctx.lineWidth=0.5;
+    for(let i=0;i<=8;i++){ctx.beginPath();ctx.moveTo(0,i*h/8);ctx.lineTo(w,i*h/8);ctx.stroke();}
+    ctx.strokeStyle='#1a1a22';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(0,h/2);ctx.lineTo(w,h/2);ctx.stroke();
+
+    const toY=v=>h/2-v*h/4;
+
+    // Draw full sine wave (faint)
+    ctx.strokeStyle='#1a1a20';ctx.lineWidth=1;
+    ctx.beginPath();
+    for(let px=0;px<w;px++){
+        const x=(px/w)*Math.PI*4;
+        if(px===0)ctx.moveTo(px,toY(Math.sin(x)));
+        else ctx.lineTo(px,toY(Math.sin(x)));
+    }
+    ctx.stroke();
+
+    // Show the reduction: x -> r
+    const xPos=(xInput%(Math.PI*4))/(Math.PI*4)*w;
+    const rPos=((res.r+Math.PI/4)/(Math.PI/2))*w;
+
+    // Vertical line at input x
+    ctx.strokeStyle='rgba(107,143,255,0.3)';ctx.lineWidth=1;
+    ctx.setLineDash([4,4]);
+    ctx.beginPath();ctx.moveTo(xPos,0);ctx.lineTo(xPos,h);ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Point on curve at x
+    ctx.beginPath();ctx.arc(xPos,toY(res.s),5,0,Math.PI*2);
+    ctx.fillStyle='#6b8fff';ctx.fill();
+    ctx.beginPath();ctx.arc(xPos,toY(res.c),5,0,Math.PI*2);
+    ctx.fillStyle='#00c9a7';ctx.fill();
+
+    // Reduced point at bottom
+    ctx.beginPath();ctx.arc(rPos,h-20,5,0,Math.PI*2);
+    ctx.fillStyle='#ffb347';ctx.fill();
+
+    // Connection
+    ctx.strokeStyle='rgba(255,179,71,0.3)';ctx.lineWidth=1;
+    ctx.setLineDash([3,3]);
+    ctx.beginPath();ctx.moveTo(xPos,toY(res.s));ctx.lineTo(rPos,h-20);ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Labels
+    ctx.font='10px SF Mono,monospace';
+    ctx.fillStyle='#6b8fff';ctx.fillText(`sin(${xInput.toFixed(4)}) = ${res.s.toFixed(10)}`,10,18);
+    ctx.fillStyle='#00c9a7';ctx.fillText(`cos(${xInput.toFixed(4)}) = ${res.c.toFixed(10)}`,10,34);
+    ctx.fillStyle='#ffb347';ctx.fillText(`reduced: x=${xInput.toFixed(4)} → r=${res.r.toFixed(8)} (nf=${res.nf}, q=${res.q})`,10,h-30);
+    ctx.fillStyle='#4a4a58';ctx.fillText(`true: sin=${trueS.toFixed(10)} cos=${trueC.toFixed(10)}`,10,h-8);
+
+    // Output text
+    const errS=Math.abs(res.s-trueS), errC=Math.abs(res.c-trueC);
+    document.getElementById('stepOutput').innerHTML=
+        `<span style="color:#6b8fff">sin(${xInput.toFixed(4)}) = ${res.s.toFixed(10)}</span> `+
+        `(libm: ${trueS.toFixed(10)}, err: ${errS.toExponential(2)})<br>`+
+        `<span style="color:#00c9a7">cos(${xInput.toFixed(4)}) = ${res.c.toFixed(10)}</span> `+
+        `(libm: ${trueC.toFixed(10)}, err: ${errC.toExponential(2)})<br>`+
+        `<span style="color:#ffb347">sin²+cos² = ${(res.s*res.s+res.c*res.c).toFixed(15)}</span>`;
+
+    requestAnimationFrame(drawStep);
+}
+drawStep();
+function updateStep(){/* triggers redraw via RAF */}
+
+// === DEMO 2: ERROR PROOF ===
+const errCanvas=document.getElementById('errorCanvas');
+const errCtx=errCanvas.getContext('2d');
+errCanvas.setAttribute('data-height','200');
+
+function drawError(){
+    const ctx=resizeCanvas(errCanvas);
+    const w=errCanvas.offsetWidth, h=200;
+    ctx.clearRect(0,0,w,h);
+
+    // Background
+    ctx.fillStyle='#080810';ctx.fillRect(0,0,w,h);
+
+    // Grid
+    ctx.strokeStyle='#111';ctx.lineWidth=0.5;
+    for(let i=0;i<=4;i++){ctx.beginPath();ctx.moveTo(0,i*h/4);ctx.lineTo(w,i*h/4);ctx.stroke();}
+
+    // Compute max error
+    let maxErr=0;
+    for(let i=0;i<1000;i++){
+        const x=(i/1000)*Math.PI*4;
+        const res=foldSincos(x);
+        maxErr=Math.max(maxErr,Math.abs(res.s-Math.sin(x)),Math.abs(res.c-Math.cos(x)));
+    }
+
+    // Draw error curve: |folded_sin - libm_sin|
+    ctx.strokeStyle='#ff6b8a';ctx.lineWidth=1.5;
+    ctx.beginPath();
+    for(let px=0;px<w;px++){
+        const x=(px/w)*Math.PI*4;
+        const res=foldSincos(x);
+        const err=Math.abs(res.s-Math.sin(x));
+        const y=h-err*h*1e7; // scale: 1e-7 is top of chart
+        if(y<0)y=0;if(y>h)y=h;
+        if(px===0)ctx.moveTo(px,y);else ctx.lineTo(px,y);
+    }
+    ctx.stroke();
+
+    // Draw error curve for cos
+    ctx.strokeStyle='#ffb347';ctx.lineWidth=1.5;
+    ctx.beginPath();
+    for(let px=0;px<w;px++){
+        const x=(px/w)*Math.PI*4;
+        const res=foldSincos(x);
+        const err=Math.abs(res.c-Math.cos(x));
+        const y=h-err*h*1e7;
+        if(y<0)y=0;if(y>h)y=h;
+        if(px===0)ctx.moveTo(px,y);else ctx.lineTo(px,y);
+    }
+    ctx.stroke();
+
+    // Reference line at 5e-7 (claimed accuracy)
+    const refY=h-5e-7*h*1e7;
+    ctx.strokeStyle='rgba(0,201,167,0.3)';ctx.lineWidth=1;ctx.setLineDash([4,4]);
+    ctx.beginPath();ctx.moveTo(0,refY);ctx.lineTo(w,refY);ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Labels
+    ctx.font='10px SF Mono,monospace';
+    ctx.fillStyle='#ff6b8a';ctx.fillText('|sin error|',10,15);
+    ctx.fillStyle='#ffb347';ctx.fillText('|cos error|',80,15);
+    ctx.fillStyle='#00c9a7';ctx.fillText('claimed: 5e-7',w-90,15);
+    ctx.fillStyle='#4a4a58';ctx.fillText(`actual max: ${maxErr.toExponential(2)}`,w-110,h-5);
+
+    document.getElementById('errorOutput').innerHTML=
+        `Max error vs libm: <span style="color:${maxErr<5e-7?'#00c9a7':'#ff6b8a'}">${maxErr.toExponential(3)}</span> `+
+        `(claim: < 5×10⁻⁷) — ${maxErr<5e-7?'<span style="color:#00c9a7">VERIFIED</span>':'<span style="color:#ff6b8a">FAILED</span>'}`;
+
+    requestAnimationFrame(drawError);
+}
+drawError();
+
+// === DEMO 3: IDENTITY VERIFICATION ===
+const idCanvas=document.getElementById('identityCanvas');
+const idCtx=idCanvas.getContext('2d');
+idCanvas.setAttribute('data-height','200');
+
+function drawIdentity(){
+    const ctx=resizeCanvas(idCanvas);
+    const w=idCanvas.offsetWidth, h=200;
+    ctx.clearRect(0,0,w,h);
+
+    ctx.fillStyle='#080810';ctx.fillRect(0,0,w,h);
+    ctx.strokeStyle='#111';ctx.lineWidth=0.5;
+    for(let i=0;i<=4;i++){ctx.beginPath();ctx.moveTo(0,i*h/4);ctx.lineTo(w,i*h/4);ctx.stroke();}
+
+    // Draw sin²+cos² - 1 (should be ~0 everywhere)
+    let maxDev=0;
+    ctx.strokeStyle='#ffb347';ctx.lineWidth=1.5;
+    ctx.beginPath();
+    for(let px=0;px<w;px++){
+        const x=(px/w)*Math.PI*4;
+        const res=foldSincos(x);
+        const dev=res.s*res.s+res.c*res.c-1.0;
+        maxDev=Math.max(maxDev,Math.abs(dev));
+        const y=h/2-dev*h*1e8; // scale: 1e-8 from center
+        if(y<0)y=0;if(y>h)y=h;
+        if(px===0)ctx.moveTo(px,y);else ctx.lineTo(px,y);
+    }
+    ctx.stroke();
+
+    // Center line (perfect = 0 deviation)
+    ctx.strokeStyle='rgba(0,201,167,0.3)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(0,h/2);ctx.lineTo(w,h/2);ctx.stroke();
+
+    ctx.font='10px SF Mono,monospace';
+    ctx.fillStyle='#ffb347';ctx.fillText('sin²x + cos²x - 1',10,15);
+    ctx.fillStyle='#00c9a7';ctx.fillText('perfect = 0',10,h-5);
+    ctx.fillStyle='#4a4a58';ctx.fillText(`max deviation: ${maxDev.toExponential(2)}`,w-130,h-5);
+
+    document.getElementById('identityOutput').innerHTML=
+        `Max deviation from 1.0: <span style="color:${maxDev<1e-6?'#00c9a7':'#ff6b8a'}">${maxDev.toExponential(3)}</span> `+
+        `(machine epsilon for float32: ~1.2×10⁻⁷) — ${maxDev<1e-6?'<span style="color:#00c9a7">IDENTITY HOLDS</span>':'<span style="color:#ff6b8a">FAILED</span>'}`;
+
+    requestAnimationFrame(drawIdentity);
+}
+drawIdentity();
+</script>
+</body>
+</html>
